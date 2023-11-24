@@ -7,10 +7,11 @@
 
 #include "uart.h"
 
-#define MAX_BUFFER_SIZE 30
+//#define MAX_BUFFER_SIZE 30
 unsigned char temp = 0;
-uint8_t buffer[MAX_BUFFER_SIZE] = "!ADC=";
-uint8_t index_buffer = 0;
+//uint8_t buffer[MAX_BUFFER_SIZE] = "!ADC=";
+//uint8_t index_buffer = 0;
+uint8_t msg[10] = "!ADC=";
 uint8_t flagSendCommand = 0;
 uint8_t buffer_flag = 0;
 
@@ -52,7 +53,7 @@ void uart_communiation_fsm(void) {
 		break;
 	case SEND_COMMAND:
 		HAL_UART_Transmit(&huart2, (uint8_t*) "\r\n", 1, 10);
-		HAL_UART_Transmit(&huart2, buffer, 5, 100);
+		HAL_UART_Transmit(&huart2, msg, 5, 100);
 		HAL_UART_Transmit(&huart2, (uint8_t*) str, strlen(str), 100);
 		HAL_UART_Transmit(&huart2, (uint8_t*) "#\r\n", 3, 100);
 		if(flagSendCommand){
@@ -62,7 +63,7 @@ void uart_communiation_fsm(void) {
 		break;
 	case RESEND_COMMAND:
 		if (timer1_flag) {
-			HAL_UART_Transmit(&huart2, buffer, 5, 100);
+			HAL_UART_Transmit(&huart2, msg, 5, 100);
 			HAL_UART_Transmit(&huart2, (uint8_t*) str, strlen(str), 100);
 			HAL_UART_Transmit(&huart2, (uint8_t*) "#\r\n", 3, 100);
 			setTimer1(300);
