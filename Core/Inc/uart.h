@@ -19,5 +19,4 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void uart_communication_fsm(void);
 void command_parser_fsm(void);
 
-
 #endif /* INC_UART_H_ */

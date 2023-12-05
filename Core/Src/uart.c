@@ -7,10 +7,10 @@
 
 #include "uart.h"
 
-//#define MAX_BUFFER_SIZE 30
+#define MAX_BUFFER_SIZE 30
 unsigned char temp = 0;
-//uint8_t buffer[MAX_BUFFER_SIZE] = "!ADC=";
-//uint8_t index_buffer = 0;
+uint8_t buffer[MAX_BUFFER_SIZE] = "!ADC=";
+uint8_t index_buffer = 0;
 uint8_t msg[10] = "!ADC=";
 uint8_t flagSendCommand = 0;
 uint8_t buffer_flag = 0;
@@ -39,6 +39,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	}
 }
 
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+//	if(huart->Instance == USART2){
+//
+//		//HAL_UART_Transmit(&huart2, &temp, 1, 50);
+//		buffer[index_buffer++] = temp;
+//		if(index_buffer == 30)
+//			index_buffer = 0;
+//		buffer_flag = 1;
+//		HAL_UART_Receive_IT(&huart2, &temp, 1);
+//	}
+//}
+
 void uart_communiation_fsm(void) {
 	switch(statusCommand) {
 	case WAIT_COMMAND:
@@ -48,7 +60,7 @@ void uart_communiation_fsm(void) {
 			HAL_ADC_Start(&hadc1);
 			ADC_value = HAL_ADC_GetValue(&hadc1);
 			// Convert to string and print
-			sprintf(str, "%hu", ADC_value);
+			sprintf(str, "%u", ADC_value);
 		}
 		break;
 	case SEND_COMMAND:
